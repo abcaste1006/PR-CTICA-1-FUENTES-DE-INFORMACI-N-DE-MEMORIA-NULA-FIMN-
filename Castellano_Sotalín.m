@@ -13,13 +13,21 @@ for i=1:q
 end
 %inicio el arrays de probabilidades, uno para los símbolos y otro para los
 %valores, luego leo el de símbolos y mediante str2sym lo paso a valor
-fprintf("Ingrese probabilidades\n");
-probabilidadstring=strings(10);
-probabilidadvalor=zeros(10);
-for i=1:q
-    probabilidadstring(i)=input("",'s');
-    probabilidadvalor(i)=str2sym(probabilidadstring(i));
-end
+suma_probabilidades=0;
+while suma_probabilidades~=1
+    suma_probabilidades=0;
+    fprintf("Ingrese probabilidades\n");
+    probabilidadstring=strings(10);
+    probabilidadvalor=zeros(10);
+    for i=1:q
+        probabilidadstring(i)=input("",'s');
+        probabilidadvalor(i)=str2sym(probabilidadstring(i));
+        suma_probabilidades=suma_probabilidades+probabilidadvalor(i);
+    end
+    if(suma_probabilidades~=1)
+        fprintf("Las probabilidades no suman 1\n");
+    end
+end   
 %declaro un valor flag para saber cuando terminar el bucle del menú
 %Limpio la pantalla e imprimo el menu
 %es importante que el valor de prueba del switch sea un char
@@ -108,12 +116,25 @@ while flag~=0
         case 'f'
             clc
             total_ext=q^n;
+            combinacion_probabilidades=zeros(total_ext);
+            switch n
+                case 1
+                    for t=1:total_ext
+                        combinacion_probabilidades(t)=probabilidadvalor(t);
+                    end
+                case 2
+                    for t=1:total_ext
+                        combinacion_probabilidades(t)=probabilidadvalor(t);
+                    end
+                case 3
+            end
+            
             if total_ext>16
                 %casos donde la fuente extendida tiene q>16
                 %casos donde la fuente extendida tiene q múltiplo de 3
                 if mod(total_ext/3,1)==0
                     for m=1:floor(total_ext/3)
-                        fprintf("%d s1 000 s1s1s1 1/14\t\t\t\t%d s1 000 s1s1s1 1/14\t\t\t\t%d s1 000 s1s1s1 1/14\n",m,m+floor(total_ext/3),m+2*floor(total_ext/3));
+                        fprintf("%d s1s1s1 %.2f\t\t\t\t%d s1 000 s1s1s1 1/14\t\t\t\t%d s1 000 s1s1s1 1/14\n",m,1,m+floor(total_ext/3),m+2*floor(total_ext/3));
                     end
                 else
                     %casos donde la fuente extendida tiene q no múltiplo de
@@ -167,6 +188,7 @@ return
 
 
 
+
 function resultado=cantidaddeinformacion(base,probabilidad)
 %funcion que permite calcular la cantidad de informacion del símbolo,
 %permite insertar la base deseada
@@ -182,6 +204,7 @@ if nargout>0
     
 end
 end
+
 
 
 
